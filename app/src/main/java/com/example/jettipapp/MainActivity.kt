@@ -3,6 +3,7 @@ package com.example.jettipapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
@@ -41,10 +42,10 @@ fun MyApp(content: @Composable () -> Unit) {
 }
 
 
-@Preview
+//@Preview
 @Composable
 fun TopHeader(totalPorPessoa: Double = 134.0) {
-    androidx.compose.material.Surface(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
@@ -62,12 +63,36 @@ fun TopHeader(totalPorPessoa: Double = 134.0) {
             Text(
                 text = "R$ $total",
                 style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.ExtraBold)
+                fontWeight = FontWeight.ExtraBold
+            )
 
         }
 
     }
 
+}
+
+@Preview
+@Composable
+fun MainContent() {
+    
+    Surface(
+        modifier = Modifier
+            .padding(2.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(corner = CornerSize(8.dp)),
+        border = BorderStroke(width = 1.dp, color = Color.LightGray)
+        ) {
+        
+        Column() {
+            Text(text = "Olá novamente...")
+
+            Text(text = "Olá novamente...")
+
+            Text(text = "Olá novamente...")
+        }
+    }
+    
 }
 
 
