@@ -85,11 +85,7 @@ fun MainContent() {
         ) {
         
         Column() {
-            Text(text = "Olá novamente...")
 
-            Text(text = "Olá novamente...")
-
-            Text(text = "Olá novamente...")
         }
     }
     
