@@ -2,6 +2,7 @@ package com.example.jettipapp
 
 import android.os.Bundle
 import android.renderscript.ScriptGroup.Input
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -84,37 +85,11 @@ fun TopHeader(totalPorPessoa: Double = 134.0) {
 @Preview
 @Composable
 fun MainContent() {
-    val totalBillState = remember {
-        mutableStateOf("")
-    }
-    val validState = remember(totalBillState.value) {
-        totalBillState.value.trim().isNotEmpty()
-    }
-    val keyboardController = LocalSoftwareKeyboardController.current
-    Surface(
-        modifier = Modifier
-            .padding(2.dp)
-            .fillMaxWidth(),
-        shape = RoundedCornerShape(corner = CornerSize(8.dp)),
-        border = BorderStroke(width = 1.dp, color = Color.LightGray)
-        ) {
-        
-        Column() {
+    BillForm(){billAmt ->
+        Log.d("AMT","MainContent: $billAmt")
 
-            InputField(valueState = totalBillState,
-                labelId = "Valor de Entrada",
-                enabled = true,
-                isSingleLine = true,
-                onAction = KeyboardActions{
-                    if(!validState) return@KeyboardActions
-                    //TODO - onvaluechanged
-
-                    keyboardController?.hide()
-                }
-            )
-        }
     }
-    
+
 }
 
 
@@ -126,4 +101,46 @@ fun DefaultPreview() {
             Text(text = "Hello Again")
         }
     }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun BillForm(
+    modifier: Modifier = Modifier,
+    onValueChangeListener: (String) -> Unit = {}
+) {
+
+    val totalBillState = remember {
+        mutableStateOf("")
+    }
+    val validState = remember(totalBillState.value) {
+        totalBillState.value.trim().isNotEmpty()
+    }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+
+    Surface(
+        modifier = Modifier
+            .padding(2.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(corner = CornerSize(8.dp)),
+        border = BorderStroke(width = 1.dp, color = Color.LightGray)
+    ) {
+
+        Column() {
+
+            InputField(valueState = totalBillState,
+                labelId = "Valor de Entrada",
+                enabled = true,
+                isSingleLine = true,
+                onAction = KeyboardActions {
+                    if (!validState) return@KeyboardActions
+                    onValueChangeListener(totalBillState.value.trim())
+
+                    keyboardController?.hide()
+                }
+            )
+        }
+    }
+
 }
