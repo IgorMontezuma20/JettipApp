@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
-                TopHeader()
+                //TopHeader()
             }
         }
     }
@@ -62,6 +62,7 @@ fun TopHeader(totalPorPessoa: Double = 134.0) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(20.dp)
             .height(150.dp)
             .clip(shape = CircleShape.copy(all = CornerSize(12.dp))),
         color = Color(0xFF00BCD4)
@@ -90,8 +91,11 @@ fun TopHeader(totalPorPessoa: Double = 134.0) {
 @Preview
 @Composable
 fun MainContent() {
-    BillForm() { billAmt ->
-        Log.d("AMT", "MainContent: $billAmt")
+    Column() {
+        BillForm() { billAmt ->
+            Log.d("AMT", "MainContent: $billAmt")
+
+        }
 
     }
 
@@ -126,11 +130,12 @@ fun BillForm(
     val sliderPositionState = remember {
         mutableStateOf(0f)
     }
+    TopHeader()
 
 
     Surface(
         modifier = Modifier
-            .padding(2.dp)
+            .padding(start = 15.dp, end = 15.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(corner = CornerSize(8.dp)),
         border = BorderStroke(width = 1.dp, color = Color.LightGray)
@@ -212,17 +217,23 @@ fun BillForm(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = "33%")
-                
+
                 Spacer(modifier = Modifier.height(14.dp))
 
                 //Slider
-                Slider(value = sliderPositionState.value,
-                    onValueChange = {newVal ->
+                Slider(
+                    value = sliderPositionState.value,
+                    onValueChange = { newVal ->
                         sliderPositionState.value = newVal
-                        Log.d("Slider","BillForm: $newVal")
+                        Log.d("Slider", "BillForm: $newVal")
+
+                    },
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                    steps = 5,
+                    onValueChangeFinished = {
 
                     })
-                
+
             }
 
 //            } else {
