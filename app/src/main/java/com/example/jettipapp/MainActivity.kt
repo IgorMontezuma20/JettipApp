@@ -130,8 +130,12 @@ fun BillForm(
     val sliderPositionState = remember {
         mutableStateOf(0f)
     }
-    TopHeader()
+    val splitByState = remember {
+        mutableStateOf(1)
+    }
+    val range = IntRange(start = 1, endInclusive = 100)
 
+    TopHeader()
 
     Surface(
         modifier = Modifier
@@ -176,9 +180,18 @@ fun BillForm(
 
                     RoundIconButton(
                         imageVector = Icons.Default.Remove,
-                        onClick = { })
+                        onClick = {
+                            splitByState.value =
+                                if (splitByState.value > 1) {
+                                    splitByState.value - 1
+                                } else {
+                                    1
+                                }
+
+
+                        })
                     Text(
-                        text = "2",
+                        text = "${splitByState.value}",
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .padding(start = 9.dp, end = 9.dp)
@@ -186,7 +199,11 @@ fun BillForm(
 
                     RoundIconButton(
                         imageVector = Icons.Default.Add,
-                        onClick = { })
+                        onClick = {
+                            if(splitByState.value < range.last){
+                                splitByState.value = splitByState.value +1
+                            }
+                        })
 
                 }
             }
