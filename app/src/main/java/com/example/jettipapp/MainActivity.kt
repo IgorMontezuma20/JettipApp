@@ -14,6 +14,9 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jettipapp.components.InputField
 import com.example.jettipapp.ui.theme.JettipAppTheme
+import com.example.jettipapp.widgets.RoundIconButton
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,8 +89,8 @@ fun TopHeader(totalPorPessoa: Double = 134.0) {
 @Preview
 @Composable
 fun MainContent() {
-    BillForm(){billAmt ->
-        Log.d("AMT","MainContent: $billAmt")
+    BillForm() { billAmt ->
+        Log.d("AMT", "MainContent: $billAmt")
 
     }
 
@@ -127,7 +131,11 @@ fun BillForm(
         border = BorderStroke(width = 1.dp, color = Color.LightGray)
     ) {
 
-        Column() {
+        Column(
+            modifier = Modifier.padding(6.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
+        ) {
 
             InputField(valueState = totalBillState,
                 labelId = "Valor de Entrada",
@@ -138,8 +146,38 @@ fun BillForm(
                     onValueChangeListener(totalBillState.value.trim())
 
                     keyboardController?.hide()
+                })
+            if (validState) {
+                Row(
+                    modifier = Modifier.padding(3.dp),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Text(
+                        text = "Dividir", modifier = Modifier.align(
+                            alignment = Alignment.CenterVertically
+                        )
+                    )
+                    Spacer(modifier = Modifier.width(120.dp))
+
+                    Row(
+                        modifier = Modifier.padding(horizontal = 3.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+
+                        RoundIconButton(
+                            imageVector = Icons.Default.Remove,
+                            onClick = { })
+
+                        RoundIconButton(
+                            imageVector = Icons.Default.Add,
+                            onClick = { })
+
+                    }
                 }
-            )
+
+            } else {
+                Box() {}
+            }
         }
     }
 
