@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jettipapp.components.InputField
 import com.example.jettipapp.ui.theme.JettipAppTheme
+import com.example.jettipapp.util.calculateTotalTip
 import com.example.jettipapp.widgets.RoundIconButton
 
 class MainActivity : ComponentActivity() {
@@ -130,12 +131,16 @@ fun BillForm(
     val sliderPositionState = remember {
         mutableStateOf(0f)
     }
-    val tipPercentage =(sliderPositionState.value * 100).toInt()
+    val tipPercentage = (sliderPositionState.value * 100).toInt()
 
     val splitByState = remember {
         mutableStateOf(1)
     }
     val range = IntRange(start = 1, endInclusive = 100)
+
+    val tipAmoutState = remember {
+        mutableStateOf(0.0)
+    }
 
     TopHeader()
 
@@ -202,8 +207,8 @@ fun BillForm(
                     RoundIconButton(
                         imageVector = Icons.Default.Add,
                         onClick = {
-                            if(splitByState.value < range.last){
-                                splitByState.value = splitByState.value +1
+                            if (splitByState.value < range.last) {
+                                splitByState.value = splitByState.value + 1
                             }
                         })
 
@@ -224,7 +229,7 @@ fun BillForm(
                 Spacer(modifier = Modifier.width(200.dp))
 
                 Text(
-                    text = "R$33.00",
+                    text = "R$ ${tipAmoutState.value}",
                     modifier = Modifier.align(
                         alignment = Alignment.CenterVertically
                     )
@@ -244,7 +249,11 @@ fun BillForm(
                     value = sliderPositionState.value,
                     onValueChange = { newVal ->
                         sliderPositionState.value = newVal
-                        Log.d("Slider", "BillForm: $newVal")
+                        tipAmoutState.value =
+                            calculateTotalTip(
+                                totalBill = totalBillState.value.toDouble(),
+                                tipPercentage = tipPercentage
+                            )
 
                     },
                     modifier = Modifier.padding(start = 16.dp, end = 16.dp),
@@ -262,3 +271,4 @@ fun BillForm(
     }
 
 }
+
